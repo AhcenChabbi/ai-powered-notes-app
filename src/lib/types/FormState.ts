@@ -1,8 +1,8 @@
-export type StringMap = {
-  [key: string]: string;
+export type FormErrors<T> = Partial<Record<keyof T, string>> & {
+  root?: string;
 };
 export type FormState<T> = {
   successMessage?: string;
   data?: T;
-  errors?: StringMap;
+  errors?: FormErrors<T>;
 };

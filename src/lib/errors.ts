@@ -1,9 +1,14 @@
 import { ZodError } from "zod";
-import { StringMap } from "./types/FormState";
+import { FormErrors } from "./types/FormState";
 
-export const convertZodErrors = (error: ZodError): StringMap => {
-  return error.errors.reduce((acc: StringMap, issue) => {
-    acc[issue.path[0]] = issue.message;
-    return acc;
-  }, {});
+export const convertZodErrors = <T>(error: ZodError<T>): FormErrors<T> => {
+  const fieldErrors: FormErrors<T> = {};
+
+  for (const issue of error.errors) {
+    const field = issue.path[0];
+    if (typeof field === "string") {
+      fieldErrors[field as keyof T] = issue.message as FormErrors<T>[keyof T];
+    }
+  }
+  return fieldErrors;
 };

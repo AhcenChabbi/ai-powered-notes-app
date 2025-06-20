@@ -25,16 +25,18 @@ export async function signupAction(
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
   };
+
+  const validatedCredentials = signupSchema.safeParse(rawData);
+  if (!validatedCredentials.success) {
+    return {
+      data: rawData,
+      errors: convertZodErrors(validatedCredentials.error),
+    };
+  }
+  const { name, email, password } = validatedCredentials.data;
   try {
-    const validatedCredentials = signupSchema.safeParse(rawData);
-    if (!validatedCredentials.success) {
-      return {
-        data: rawData,
-        errors: convertZodErrors(validatedCredentials.error),
-      };
-    }
     const existingUser = await prisma.user.findUnique({
-      where: { email: validatedCredentials.data.email },
+      where: { email },
     });
     if (existingUser) {
       return {
@@ -42,11 +44,11 @@ export async function signupAction(
         errors: { email: "Email already registered" },
       };
     }
-    const hashedPassword = await bcrypt.hash(rawData.password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await prisma.user.create({
       data: {
-        name: rawData.name,
-        email: rawData.email,
+        name,
+        email,
         password: hashedPassword,
       },
     });
@@ -58,6 +60,7 @@ export async function signupAction(
       successMessage: "Signed up successfully",
       data: rawData,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return {
       data: rawData,
