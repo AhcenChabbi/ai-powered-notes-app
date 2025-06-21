@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-gray-900 text-white py-16">
+    <footer id="contact" className="bg-muted py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Logo and Description */}
@@ -12,16 +12,18 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <Brain className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">AI Notes</span>
+              <span className="text-xl font-bold text-foreground">
+                AI Notes
+              </span>
             </div>
-            <p className="text-gray-400 mb-6 max-w-md">
+            <p className="text-muted-foreground mb-6 max-w-md">
               Transform your note-taking experience with the power of artificial
               intelligence. Write smarter, organize better, understand more.
             </p>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -33,7 +35,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -45,7 +47,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -60,12 +62,12 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4">Product</h3>
-            <ul className="space-y-2 text-gray-400">
+            <h3 className="font-semibold mb-4 text-foreground">Product</h3>
+            <ul className="space-y-2 text-muted-foreground">
               <li>
                 <a
                   href="#features"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-foreground transition-colors"
                 >
                   Features
                 </a>
@@ -73,18 +75,18 @@ const Footer = () => {
               <li>
                 <a
                   href="#pricing"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-foreground transition-colors"
                 >
                   Pricing
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   API
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   Integrations
                 </a>
               </li>
@@ -93,25 +95,25 @@ const Footer = () => {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-gray-400">
+            <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
+            <ul className="space-y-2 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   Cookie Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-foreground transition-colors">
                   Contact Us
                 </a>
               </li>
@@ -119,7 +121,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground">
           <p>&copy; 2024 AI Notes. All rights reserved.</p>
         </div>
       </div>

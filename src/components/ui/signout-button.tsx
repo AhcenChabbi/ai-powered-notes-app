@@ -9,7 +9,9 @@ export default function SignoutButton() {
   const [pending, startTransition] = useTransition();
   const handleSignout = () => {
     startTransition(async () => {
-      await signOut();
+      await signOut({
+        redirectTo: "/login",
+      });
       toast.success("Signed out successfully");
     });
   };

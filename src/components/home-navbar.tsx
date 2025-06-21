@@ -3,11 +3,12 @@ import { Brain, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { ModeToggle } from "./mode-toggle";
 
 const HomeNavbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -15,27 +16,28 @@ const HomeNavbar = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <Brain className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">AI Notes</span>
+            <span className="text-xl font-bold text-foreground">AI Notes</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="#features"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Features
             </Link>
             <Link
               href="#contact"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Contact
             </Link>
+            <ModeToggle />
             <Link href="/login">
               <Button
                 variant="outline"
-                className="text-gray-600 border-gray-300 hover:bg-gray-50"
+                className="text-muted-foreground border-border hover:bg-accent"
               >
                 Login
               </Button>
@@ -48,32 +50,34 @@ const HomeNavbar = () => {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          <div className="md:hidden flex items-center space-x-2">
+            <ModeToggle />
+            <button
+              className="p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
+          <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col space-y-4">
               <Link
                 href="#features"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 Features
               </Link>
-
               <Link
                 href="#contact"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 Contact
               </Link>
@@ -81,7 +85,7 @@ const HomeNavbar = () => {
                 <Link href="/login">
                   <Button
                     variant="outline"
-                    className="text-gray-600 border-gray-300 hover:bg-gray-50 w-full"
+                    className="text-muted-foreground border-border hover:bg-accent w-full"
                   >
                     Login
                   </Button>
