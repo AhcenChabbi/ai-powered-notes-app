@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-
 const Features = () => {
   return (
     <section id="features" className="py-20 bg-muted/30">

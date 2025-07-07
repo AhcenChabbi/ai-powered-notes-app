@@ -1,9 +1,10 @@
 "use client";
 
 import { useTransition } from "react";
-import { Button } from "./button";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
+import { DropdownMenuItem } from "./dropdown-menu";
+import { LogOut } from "lucide-react";
 
 export default function SignoutButton() {
   const [pending, startTransition] = useTransition();
@@ -16,8 +17,9 @@ export default function SignoutButton() {
     });
   };
   return (
-    <Button onClick={handleSignout} disabled={pending} variant={"outline"}>
-      Signout
-    </Button>
+    <DropdownMenuItem onClick={handleSignout} disabled={pending}>
+      <LogOut className="mr-2 h-4 w-4" />
+      <span>Log out</span>
+    </DropdownMenuItem>
   );
 }

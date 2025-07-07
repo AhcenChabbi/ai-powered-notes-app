@@ -121,3 +121,17 @@ export async function handleSignInWithGoogle() {
     successMessage: "Logged in successfully",
   });
 }
+
+export async function getUserNoteAction(userId: string) {
+  const notes = await prisma.note.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      plainTextContent: true,
+    },
+  });
+  return notes;
+}
