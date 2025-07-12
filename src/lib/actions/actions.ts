@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "../auth";
+import { auth, signIn, signOut } from "../auth";
 import { convertZodErrors } from "../errors";
 import {
   loginSchema,
@@ -8,12 +8,11 @@ import {
   TSignupSchema,
 } from "../schemas/schemas";
 import { FormState } from "../types/FormState";
-import { executeAction } from "./executeAction";
 import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
+import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
-
-const redirectTo = "/dashboard";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export async function signupAction(
   prevState: unknown,
@@ -25,7 +24,6 @@ export async function signupAction(
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
   };
-
   const validatedCredentials = signupSchema.safeParse(rawData);
   if (!validatedCredentials.success) {
     return {
@@ -34,41 +32,40 @@ export async function signupAction(
     };
   }
   const { name, email, password } = validatedCredentials.data;
-  try {
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (existingUser) {
-      return {
-        data: rawData,
-        errors: { email: "Email already registered" },
-      };
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
-    await signIn("credentials", {
-      ...validatedCredentials.data,
-      redirectTo,
-    });
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+  if (existingUser) {
     return {
-      successMessage: "Signed up successfully",
       data: rawData,
+      errors: { email: "Email already registered" },
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
+  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+    },
+  });
+  if (!user) {
     return {
       data: rawData,
       errors: {
-        root: "Something went wrong. Please try again.",
+        root: "An error occurred while creating your account.",
       },
     };
   }
+  await signIn("credentials", {
+    ...validatedCredentials.data,
+    redirect: false,
+  });
+  return {
+    successMessage: "Signed up successfully",
+    data: rawData,
+  };
 }
 
 export async function loginAction(
@@ -90,39 +87,56 @@ export async function loginAction(
 
     await signIn("credentials", {
       ...validatedCredentials.data,
-      redirectTo,
+      redirect: false,
     });
     return {
-      successMessage: "Logged in successfully",
+      successMessage: "Signed in successfully",
       data: rawData,
     };
   } catch (error) {
-    if (error instanceof AuthError) {
-      return {
-        data: rawData,
-        errors: {
-          root: "Invalid email or password.",
-        },
-      };
+    if (isRedirectError(error)) {
+      throw error;
     }
-
-    throw error;
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return {
+            errors: {
+              root: "Invalid credentials",
+            },
+            data: rawData,
+          };
+      }
+    }
   }
+  return {
+    errors: {
+      root: "An error occurred while logging in.",
+    },
+    data: rawData,
+  };
 }
 
-export async function handleSignInWithGoogle() {
-  await executeAction({
-    actionFn: async () => {
-      await signIn("google", {
-        redirectTo,
-      });
-    },
-    errorMessage: "Something went wrong. Please try again.",
-    successMessage: "Logged in successfully",
+export async function signInWithGoogle() {
+  await signIn("google", {
+    redirectTo: "/dashboard",
   });
 }
-
-export async function getUserNoteAction(userId: string) {
+export async function handleSignOut() {
+  await signOut({
+    redirect: false,
+  });
+  return {
+    successMessage: "Signed out successfully",
+  };
+}
+export async function getUserNoteAction() {
+  const session = await auth();
+  const user = session?.user;
+  if (!user) {
+    redirect("/login");
+  }
+  const userId = user.id;
   const notes = await prisma.note.findMany({
     where: {
       userId,

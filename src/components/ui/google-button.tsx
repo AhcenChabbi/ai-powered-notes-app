@@ -1,12 +1,12 @@
 "use client";
-import { handleSignInWithGoogle } from "@/lib/actions/actions";
+import { signInWithGoogle } from "@/lib/actions/actions";
 import { Button } from "./button";
 import { useFormStatus } from "react-dom";
 
 export function GoogleButton() {
   const { pending } = useFormStatus();
   return (
-    <form action={handleSignInWithGoogle}>
+    <form action={signInWithGoogle}>
       <Button
         type="submit"
         variant="outline"

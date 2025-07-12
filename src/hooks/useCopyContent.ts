@@ -23,8 +23,7 @@ export default function useCopyContent() {
 
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (_err) {
       toast.error("Failed to copy to clipboard");
       await navigator.clipboard.writeText(text);
     }

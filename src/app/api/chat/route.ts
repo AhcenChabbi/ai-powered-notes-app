@@ -9,14 +9,13 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const session = await auth();
-  const userId = session?.user?.id;
-  if (!session || !userId) {
+  const user = session?.user;
+  if (!user || !user.id) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-
   const { messages }: { messages: UIMessage[] } = await req.json();
   const lastMessages = messages.slice(-10);
-  const userNotes = await getUserNoteAction(userId);
+  const userNotes = await getUserNoteAction();
   const notesContext = userNotes
     .map((note, i) => {
       return `Note ${i + 1}:\nnoteId: ${note.id}\nTitle: ${

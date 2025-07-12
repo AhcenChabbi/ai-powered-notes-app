@@ -14,9 +14,11 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session) {
+    const user = session?.user;
+    if (!user) {
       redirect("/login");
     }
+    const userId = user.id;
     const searchParams = req.nextUrl.searchParams;
     const tags = parseAsTags.parseServerSide(searchParams.get("tags") || "");
     const filter = parseAsFilter.parseServerSide(
@@ -30,7 +32,7 @@ export async function GET(req: NextRequest) {
       searchParams.get("search") || ""
     );
     const whereClause = {
-      userId: session.user?.id,
+      userId,
       ...(search && {
         title: { contains: search, mode: "insensitive" as const },
         content: { contains: search, mode: "insensitive" as const },
@@ -75,9 +77,9 @@ export async function GET(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      { message: "Something went wrong", error },
+      { message: "Something went wrong" },
       { status: 500 }
     );
   }
@@ -86,7 +88,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session) {
+    const user = session?.user;
+    if (!user) {
       redirect("/login");
     }
     const body = await req.json();
@@ -97,7 +100,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const userId = session.user?.id;
+    const userId = user.id;
     const { title, content, tags, isFavorite, isPinned, summary } =
       validatedData.data;
     const plainTextContent = convert(content, { wordwrap: false });
@@ -151,10 +154,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(note, {
       status: 201,
     });
-  } catch (error) {
-    console.log({ error });
+  } catch (_error) {
     return NextResponse.json(
-      { message: "Failed to create note", error },
+      { message: "Failed to create note" },
       { status: 500 }
     );
   }

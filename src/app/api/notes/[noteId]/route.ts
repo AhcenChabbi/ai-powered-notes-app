@@ -27,13 +27,14 @@ export async function PATCH(
   try {
     const { noteId } = await params;
     const session = await auth();
-    if (!session) {
+    const user = session?.user;
+    if (!user) {
       return NextResponse.json(
         { message: "User not authenticated" },
         { status: 401 }
       );
     }
-    const userId = session.user?.id;
+    const userId = user.id;
     const note = await prisma.note.findUnique({
       where: {
         id: noteId,
@@ -104,10 +105,9 @@ export async function PATCH(
       },
     });
     return NextResponse.json(updatedNote, { status: 200 });
-  } catch (error) {
-    console.log("error", error);
+  } catch (_error) {
     return NextResponse.json(
-      { message: "Error updating note", error },
+      { message: "Error updating note" },
       { status: 500 }
     );
   }
@@ -150,9 +150,9 @@ export async function DELETE(
       { message: "Note deleted successfully" },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      { message: "Error deleting note", error },
+      { message: "Error deleting note" },
       { status: 500 }
     );
   }

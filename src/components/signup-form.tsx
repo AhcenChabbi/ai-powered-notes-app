@@ -15,10 +15,21 @@ import { Separator } from "./ui/separator";
 import PasswordInput from "./ui/password-input";
 import { GoogleButton } from "./ui/google-button";
 import { signupAction } from "@/lib/actions/actions";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 export default function SignUpForm() {
   const [state, action, isPending] = useActionState(signupAction, {});
+  useEffect(() => {
+    if (state.errors?.root) {
+      toast.error(state.errors.root);
+    }
+    if (state.successMessage) {
+      toast.success(state.successMessage);
+      redirect("/dashboard");
+    }
+  }, [state]);
   return (
     <div className="max-w-md w-full space-y-8">
       {/* Header */}
@@ -45,11 +56,6 @@ export default function SignUpForm() {
           <CardTitle className="text-2xl text-center">Sign up</CardTitle>
           <CardDescription className="text-center">
             Create your account to start taking smarter notes
-            {state.errors?.root && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-500">{state.errors.root}</p>
-              </div>
-            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

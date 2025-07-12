@@ -2,12 +2,12 @@ import Features from "@/components/features";
 import Footer from "@/components/footer";
 import Hero from "@/components/hero";
 import HomeNavbar from "@/components/home-navbar";
-import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-
+import getSession from "@/lib/getSession";
 export default async function Home() {
-  const session = await auth();
-  if (session) {
+  const session = await getSession();
+  const user = session?.user;
+  if (user) {
     redirect("/dashboard");
   }
   return (

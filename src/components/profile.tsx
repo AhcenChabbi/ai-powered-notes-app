@@ -1,23 +1,23 @@
-import { Settings, User } from "lucide-react";
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import SignoutButton from "./ui/signout-button";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-export default async function Profile() {
-  const session = await auth();
-  if (!session) {
-    redirect("/login");
-  }
-  const { user } = session;
+import ProfileInfoButton from "./profile-info-button";
+import SettingButton from "./settings-button";
+import { useSession } from "next-auth/react";
+import ProfileSkeleton from "./profile-skeleton";
+
+export default function Profile() {
+  const { data, status } = useSession();
+  if (status === "loading") return <ProfileSkeleton />;
+  const user = data?.user;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -27,12 +27,12 @@ export default async function Profile() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-full object-cover">
                 <AvatarImage
-                  src={user?.image || "/placeholder.svg?height=32&width=32"}
+                  src={user?.image || "/user.png"}
                   alt={user?.name || "User Avatar"}
                 />
-                <AvatarFallback className="rounded-lg">SC</AvatarFallback>
+                <AvatarFallback className="rounded-full">SC</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -52,12 +52,12 @@ export default async function Profile() {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="h-8 w-8 rounded-full object-cover">
                   <AvatarImage
-                    src={user?.image || "/placeholder.svg?height=32&width=32"}
+                    src={user?.image || "/user.png"}
                     alt={user?.name || "User Avatar"}
                   />
-                  <AvatarFallback className="rounded-lg">
+                  <AvatarFallback className="rounded-full">
                     {user?.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -72,14 +72,8 @@ export default async function Profile() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
+            <ProfileInfoButton />
+            <SettingButton />
             <DropdownMenuSeparator />
             <SignoutButton />
           </DropdownMenuContent>

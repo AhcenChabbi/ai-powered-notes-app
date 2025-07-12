@@ -13,11 +13,22 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import PasswordInput from "./ui/password-input";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { loginAction } from "@/lib/actions/actions";
 import { GoogleButton } from "./ui/google-button";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 export default function LoginForm() {
   const [state, action, isPending] = useActionState(loginAction, {});
+  useEffect(() => {
+    if (state.successMessage) {
+      toast.success(state.successMessage);
+      redirect("/dashboard");
+    }
+    if (state.errors?.root) {
+      toast.error(state.errors.root);
+    }
+  }, [state]);
   return (
     <div className="max-w-md w-full space-y-8">
       {/* Header */}
@@ -45,11 +56,6 @@ export default function LoginForm() {
           </CardTitle>
           <CardDescription className="text-center text-muted-foreground">
             Enter your email and password to access your notes
-            {state.errors?.root && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-500">{state.errors.root}</p>
-              </div>
-            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

@@ -1,14 +1,14 @@
 import { ModeToggle } from "@/components/mode-toggle";
-import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-
+import getSession from "@/lib/getSession";
 export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (session) {
+  const session = await getSession();
+  const user = session?.user;
+  if (user) {
     redirect("/dashboard");
   }
   return (

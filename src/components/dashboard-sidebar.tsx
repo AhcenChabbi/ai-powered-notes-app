@@ -8,6 +8,10 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from "./ui/sidebar";
+import Profile from "./profile";
+import { Suspense } from "react";
+import { TagsListSkeleton } from "./tags-list-skeleton";
+import { TagsList } from "./tags-list";
 const Logo = () => {
   return (
     <div className="flex items-center space-x-2 px-2 py-2">
@@ -18,13 +22,7 @@ const Logo = () => {
     </div>
   );
 };
-export default function DashboardSidebar({
-  sidebarTags,
-  sidebarProfile,
-}: {
-  sidebarTags: React.ReactNode;
-  sidebarProfile: React.ReactNode;
-}) {
+export default function DashboardSidebar() {
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
@@ -34,9 +32,13 @@ export default function DashboardSidebar({
       <SidebarContent className="overflow-x-hidden">
         <SidebarNav />
         <SidebarSeparator />
-        {sidebarTags}
+        <Suspense fallback={<TagsListSkeleton />}>
+          <TagsList />
+        </Suspense>
       </SidebarContent>
-      <SidebarFooter>{sidebarProfile}</SidebarFooter>
+      <SidebarFooter>
+        <Profile />
+      </SidebarFooter>
     </Sidebar>
   );
 }

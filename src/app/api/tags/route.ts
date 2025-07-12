@@ -7,7 +7,8 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session) {
+    const user = session?.user;
+    if (!user) {
       return NextResponse.json(
         { message: "Unauthorized" },
         {
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
         }
       );
     }
-    const userId = session.user?.id;
+    const userId = user.id;
     const totalCount = await prisma.tag.count({
       where: {
         userId,
@@ -55,18 +56,19 @@ export async function GET(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
-    return NextResponse.json({ message: "Failed to retrieve tags", error });
+  } catch (_error) {
+    return NextResponse.json({ message: "Failed to retrieve tags" });
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session) {
+    const user = session?.user;
+    if (!user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    const userId = session.user?.id;
+    const userId = user.id;
     if (!userId) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
@@ -107,9 +109,9 @@ export async function POST(req: NextRequest) {
       },
     });
     return NextResponse.json(tag, { status: 200 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      { message: "Failed to create tag", error },
+      { message: "Failed to create tag" },
       { status: 500 }
     );
   }
