@@ -67,7 +67,7 @@ const ActionButton = ({
     <Button
       variant="ghost"
       size={size}
-      className={`${dimensions} p-0 ${className}`}
+      className={`${dimensions} p-0 cursor-pointer ${className}`}
       title={title}
       disabled={disabled}
       onClick={onClick}

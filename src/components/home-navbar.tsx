@@ -21,29 +21,17 @@ const HomeNavbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="#features"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Features
-            </Link>
-            <Link
-              href="#contact"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Contact
-            </Link>
             <ModeToggle />
             <Link href="/login">
               <Button
                 variant="outline"
-                className="text-muted-foreground border-border hover:bg-accent"
+                className="text-muted-foreground border-border hover:bg-accent cursor-pointer"
               >
                 Login
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer">
                 Sign Up
               </Button>
             </Link>
@@ -53,7 +41,7 @@ const HomeNavbar = () => {
           <div className="md:hidden flex items-center space-x-2">
             <ModeToggle />
             <button
-              className="p-2"
+              className="p-2 cursor-pointer"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -69,29 +57,17 @@ const HomeNavbar = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col space-y-4">
-              <Link
-                href="#features"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Features
-              </Link>
-              <Link
-                href="#contact"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Contact
-              </Link>
               <div className="flex flex-col space-y-2">
                 <Link href="/login">
                   <Button
                     variant="outline"
-                    className="text-muted-foreground border-border hover:bg-accent w-full"
+                    className="text-muted-foreground border-border hover:bg-accent w-full cursor-pointer"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white w-full">
+                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white w-full cursor-pointer">
                     Sign Up
                   </Button>
                 </Link>

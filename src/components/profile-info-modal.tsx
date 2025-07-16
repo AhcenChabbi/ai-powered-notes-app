@@ -19,32 +19,17 @@ import {
 import { type User } from "next-auth";
 import { useProfileInfoModal } from "@/store/profileInfoModal.store";
 import { useSettingsModal } from "@/store/settingsModal.store";
+import { formatDate } from "@/lib/utils/format-date";
 
 type Props = {
   user: User;
 };
+
 export default function ProfileInfoModal({ user }: Props) {
   const { isOpen, closeProfileInfoModal } = useProfileInfoModal();
   const openSettingsModal = useSettingsModal(
     (state) => state.openSettingsModal
   );
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatJoinedDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-    });
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={closeProfileInfoModal}>
       <DialogContent className="!max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -78,7 +63,7 @@ export default function ProfileInfoModal({ user }: Props) {
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center space-x-1">
                       <CalendarDays className="h-4 w-4" />
-                      <span>Joined {formatJoinedDate(user.createdAt)}</span>
+                      <span>Joined {formatDate(user.createdAt)}</span>
                     </div>
                     {user.emailVerified ? (
                       <div className="flex items-center space-x-1">

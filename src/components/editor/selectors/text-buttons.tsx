@@ -82,7 +82,7 @@ export const TextButtons = () => {
         >
           <Button
             size="icon"
-            className="rounded-none"
+            className="rounded-none cursor-pointer"
             variant="ghost"
             aria-label={item.ariaLabel}
             aria-pressed={item.isActive(editor)}

@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { User as UserIcon, Mail, Camera, X } from "lucide-react";
 import { useSettingsModal } from "@/store/settingsModal.store";
 import { User } from "next-auth";
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ import {
 } from "./ui/form";
 import useUpdateUserMutation from "@/hooks/mutations/useUpdateUserMutation";
 import { useSession } from "next-auth/react";
+import VerifyEmail from "@/lib/utils/verifyEmail";
 type Props = {
   user: User;
 };
@@ -88,6 +89,17 @@ export default function SettingsModal({ user }: Props) {
       },
     });
   };
+  const [isPending, startTransition] = useTransition();
+  const handleVerifyEmail = () => {
+    startTransition(async () => {
+      const res = await VerifyEmail(user.email!);
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    });
+  };
   return (
     <Dialog open={isOpen} onOpenChange={closeSettingsModal}>
       <DialogContent className="!max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -136,6 +148,7 @@ export default function SettingsModal({ user }: Props) {
                     type="button"
                     variant="outline"
                     size="sm"
+                    className="cursor-pointer"
                   >
                     <input
                       accept="image/*"
@@ -200,7 +213,14 @@ export default function SettingsModal({ user }: Props) {
                             >
                               Not Verified
                             </Badge>
-                            <Button type="button" variant="outline" size="sm">
+                            <Button
+                              onClick={handleVerifyEmail}
+                              disabled={isPending}
+                              className="cursor-pointer"
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                            >
                               <Mail className="h-4 w-4 mr-2" />
                               Verify Email
                             </Button>

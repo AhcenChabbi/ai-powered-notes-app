@@ -22,18 +22,7 @@ import { extensions } from "./editor";
 import useNoteActions from "@/hooks/useNoteActions";
 import useFilterQueryState from "@/hooks/useFilterQueryState";
 import ActionsDropdown from "./actions-dropdown";
-
-const DATE_FORMAT_OPTIONS = {
-  year: "numeric" as const,
-  month: "long" as const,
-  day: "numeric" as const,
-  hour: "2-digit" as const,
-  minute: "2-digit" as const,
-};
-
-const formatDate = (date: Date): string => {
-  return new Date(date).toLocaleDateString("en-US", DATE_FORMAT_OPTIONS);
-};
+import { formatDate } from "@/lib/utils/format-date";
 
 export function NoteViewer() {
   const { Note, closeNoteViewerModal, isOpen } = useNoteViewer();
@@ -133,7 +122,7 @@ const NoteViewerHeader = ({ note }: { note: TNoteWithTags }) => {
             onClick={() => openNoteEditorModal(note)}
             variant="outline"
             size="sm"
-            className="gap-2"
+            className="gap-2 cursor-pointer"
           >
             <Edit className="h-4 w-4" />
             Edit
@@ -152,12 +141,12 @@ const NoteMetadata = ({ Note }: { Note: TNoteWithTags }) => (
   <div className="flex items-center gap-6 text-sm text-muted-foreground border-b border-border pb-4">
     <div className="flex items-center gap-2">
       <Calendar className="h-4 w-4" />
-      <span>Created {formatDate(Note.createdAt)}</span>
+      <span>Created {formatDate(Note.createdAt, "DATE_TIME")}</span>
     </div>
     {Note.updatedAt !== Note.createdAt && (
       <div className="flex items-center gap-2">
         <Clock className="h-4 w-4" />
-        <span>Updated {formatDate(Note.updatedAt)}</span>
+        <span>Updated {formatDate(Note.updatedAt, "DATE_TIME")}</span>
       </div>
     )}
     <div className="flex items-center gap-2">
@@ -225,7 +214,7 @@ const NoteViewerFooter = ({ Note }: { Note: TNoteWithTags }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-green-600 hover:text-green-700"
+              className="text-green-600 hover:text-green-700 cursor-pointer"
               disabled={isUpdating}
               onClick={RestoreNote}
             >
@@ -235,7 +224,7 @@ const NoteViewerFooter = ({ Note }: { Note: TNoteWithTags }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-red-700"
+              className="text-red-600 hover:text-red-700 cursor-pointer"
               disabled={isDeleting}
               onClick={handleDeleteNote}
             >
@@ -248,7 +237,7 @@ const NoteViewerFooter = ({ Note }: { Note: TNoteWithTags }) => {
             <Button
               variant="ghost"
               size="sm"
-              className={Note.isPinned ? "text-orange-500" : ""}
+              className={`${Note.isPinned && "text-orange-500"} cursor-pointer`}
               disabled={isUpdating}
               onClick={handleTogglePinNote}
             >
@@ -258,7 +247,7 @@ const NoteViewerFooter = ({ Note }: { Note: TNoteWithTags }) => {
             <Button
               variant="ghost"
               size="sm"
-              className={Note.isFavorite ? "text-red-500" : ""}
+              className={`${Note.isFavorite && "text-red-500"} cursor-pointer`}
               disabled={isUpdating}
               onClick={handleToggleFavoriteNote}
             >

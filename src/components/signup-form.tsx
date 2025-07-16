@@ -146,7 +146,7 @@ export default function SignUpForm() {
             <Button
               disabled={isPending}
               type="submit"
-              className="w-full cursor-pointer h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50"
+              className="w-full cursor-pointer h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 cursor-pointer"
             >
               Create account
             </Button>

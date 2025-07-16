@@ -3,12 +3,10 @@ import { Brain, Plus } from "lucide-react";
 export default function DashboardLoading() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Floating New Note Button Skeleton */}
       <div className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg flex items-center justify-center animate-pulse">
         <Plus className="w-6 h-6 text-white animate-bounce" />
       </div>
 
-      {/* Loading overlay with progress */}
       <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
         <div className="text-center space-y-6">
           <div className="relative">

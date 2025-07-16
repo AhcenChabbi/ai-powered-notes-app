@@ -125,6 +125,7 @@ export default function CreateTagModal() {
               <Button
                 variant="outline"
                 onClick={() => setIsCreateDialogOpen(false)}
+                className="cursor-pointer"
               >
                 Cancel
               </Button>

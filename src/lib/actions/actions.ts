@@ -9,7 +9,7 @@ import {
 } from "../schemas/schemas";
 import { FormState } from "../types/FormState";
 import { prisma } from "../prisma";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -148,4 +148,59 @@ export async function getUserNoteAction() {
     },
   });
   return notes;
+}
+
+export default async function verificationEmailAction(token: string): Promise<{
+  state: "success" | "invalid" | "expired";
+  message: string;
+}> {
+  const verificationToken = await prisma.verificationToken.findFirst({
+    where: {
+      token,
+    },
+  });
+  if (!verificationToken) {
+    return {
+      state: "invalid",
+      message: "Invalid token",
+    };
+  }
+  const isExpired = verificationToken.expires.getTime() < Date.now();
+  if (isExpired) {
+    return {
+      state: "expired",
+      message: "Token expired",
+    };
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      email: verificationToken.identifier,
+    },
+  });
+  if (!user) {
+    return {
+      state: "invalid",
+      message: "User not found",
+    };
+  }
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      emailVerified: new Date(),
+    },
+  });
+  await prisma.verificationToken.delete({
+    where: {
+      identifier_token: {
+        identifier: verificationToken.identifier,
+        token: verificationToken.token,
+      },
+    },
+  });
+  return {
+    state: "success",
+    message: "Email verified successfully",
+  };
 }

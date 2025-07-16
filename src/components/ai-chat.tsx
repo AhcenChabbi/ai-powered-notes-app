@@ -96,7 +96,7 @@ export default function AIChat() {
               <Button
                 type="submit"
                 disabled={isProcessing || input.trim() === ""}
-                className="px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                 size="sm"
               >
                 <Send className="w-4 h-4" />
@@ -157,7 +157,7 @@ const ChatHeader = ({ onClose }: ChatHeaderProps) => {
         variant="ghost"
         size="sm"
         onClick={onClose}
-        className="text-white hover:bg-white/20 h-8 w-8 p-0"
+        className="text-white hover:bg-white/20 h-8 w-8 p-0 cursor-pointer"
       >
         <X className="w-4 h-4" />
       </Button>

@@ -24,7 +24,7 @@ export default function NotFound() {
             </p>
           </div>
           <div className="space-y-3">
-            <Button asChild className="w-full">
+            <Button asChild className="w-full cursor-pointer">
               <Link href="/">
                 <Home className="h-4 w-4 mr-2" />
                 Go to Home
@@ -36,7 +36,7 @@ export default function NotFound() {
               onClick={() => {
                 router.back();
               }}
-              className="w-full bg-transparent"
+              className="w-full bg-transparent cursor-pointer"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Go Back

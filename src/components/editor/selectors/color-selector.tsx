@@ -154,7 +154,7 @@ export const ColorSelector = ({ open, onOpenChange }: ColorSelectorProps) => {
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
         <Button
-          className="gap-2 rounded-none"
+          className="gap-2 rounded-none cursor-pointer"
           variant="ghost"
           aria-label="Text and background color"
         >

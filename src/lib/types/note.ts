@@ -12,15 +12,15 @@ export type Tag = {
 };
 export type TNoteWithTags = {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   userId: string;
   title: string;
   content: string;
   summary: string | null;
   isPinned: boolean;
   isFavorite: boolean;
-  deletedAt: Date | null;
+  deletedAt: string | null;
   tags: Tag[];
 };
 

@@ -1,56 +1,13 @@
 import NextAuth from "next-auth";
 import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import Credentials from "next-auth/providers/credentials";
-import { loginSchema } from "./schemas/schemas";
-import bcrypt from "bcrypt";
-import Google from "next-auth/providers/google";
 import { encode as defaultEncode } from "next-auth/jwt";
 import { v4 as uuid } from "uuid";
+import authConfig from "@/auth.config";
 const adapter = PrismaAdapter(prisma);
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter,
-  providers: [
-    Google({
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-        },
-      },
-    }),
-    Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        const { email, password } = loginSchema.parse(credentials);
-        const user = await prisma.user.findUnique({
-          where: {
-            email,
-          },
-        });
-        if (!user) {
-          return null;
-        }
-        const isPasswordValid = await bcrypt.compare(password, user.password!);
-        if (!isPasswordValid) {
-          return null;
-        }
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          createdAt: user.createdAt.toString(),
-          emailVerified: user.emailVerified?.toString() || null,
-          updatedAt: user.updatedAt.toString(),
-        };
-      },
-    }),
-  ],
+  ...authConfig,
   callbacks: {
     async jwt({ token, account }) {
       if (account?.provider === "credentials") {
@@ -81,6 +38,21 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         return sessionToken;
       }
       return defaultEncode(params);
+    },
+  },
+  events: {
+    linkAccount: async ({ user, account }) => {
+      const trustedProviders = ["google", "github"];
+      if (trustedProviders.includes(account?.provider)) {
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            emailVerified: new Date(),
+          },
+        });
+      }
     },
   },
 });

@@ -82,7 +82,10 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="gap-2 rounded-none border-none">
+        <Button
+          variant="ghost"
+          className="gap-2 rounded-none border-none cursor-pointer"
+        >
           <ExternalLink className={LINK_ICON_SIZE} />
           <span
             className={cn("underline decoration-stone-400 underline-offset-4", {
@@ -113,7 +116,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
               type="button"
               className={cn(
                 "flex items-center rounded-sm p-1 text-red-600 transition-all",
-                "hover:bg-red-100 dark:hover:bg-red-800",
+                "hover:bg-red-100 dark:hover:bg-red-800 cursor-pointer",
                 BUTTON_HEIGHT
               )}
               onClick={handleRemoveLink}
@@ -124,7 +127,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
           ) : (
             <Button
               size="icon"
-              className={BUTTON_HEIGHT}
+              className={`${BUTTON_HEIGHT} cursor-pointer`}
               type="submit"
               aria-label="Add link"
             >

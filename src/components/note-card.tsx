@@ -1,7 +1,7 @@
 import { TNoteWithTags } from "@/lib/types/note";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Heart, Pin } from "lucide-react";
-import { formatDate } from "@/lib/utils/format-date";
+import { formatRelativeTime } from "@/lib/utils/format-date";
 import { Badge } from "./ui/badge";
 import NoteCardActions from "./note-card-actions";
 import { useNoteViewer } from "@/store/noteViewer.store";
@@ -103,7 +103,7 @@ const ListViewContent = ({ note, viewMode }: ListViewContentProps) => {
         <div className="flex items-center gap-4">
           <TagsList tags={note.tags} maxTags={MAX_TAGS.list} />
           <span className="text-xs text-muted-foreground">
-            {formatDate(note.createdAt)}
+            {formatRelativeTime(note.createdAt)}
           </span>
         </div>
       </div>
@@ -119,7 +119,7 @@ const GridViewContent = ({ note }: GridViewContentProps) => {
     <div className="space-y-3">
       <TagsList tags={note.tags} maxTags={MAX_TAGS.grid} />
       <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>{formatDate(note.createdAt)}</span>
+        <span>{formatRelativeTime(note.createdAt)}</span>
         <StatusIndicators
           isPinned={note.isPinned}
           isFavorite={note.isFavorite}

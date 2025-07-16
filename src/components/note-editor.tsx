@@ -153,7 +153,7 @@ const TagDisplay = ({
       {tag.name}
       <button
         onClick={() => onRemoveTag(tag.name)}
-        className="hover:bg-destructive/20 rounded-full p-0.5"
+        className="hover:bg-destructive/20 rounded-full p-0.5 cursor-pointer"
       >
         <X className="h-3 w-3" />
       </button>

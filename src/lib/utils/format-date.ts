@@ -1,20 +1,30 @@
-export const formatDate = (date: string | Date) => {
+import { formatDistanceToNow, isValid, format } from "date-fns";
+export const formatRelativeTime = (date: string | Date) => {
   const dateObj = new Date(date);
-  const now = new Date();
-  const diffInMs = now.getTime() - dateObj.getTime();
-
-  const diffInMinutes = diffInMs / (1000 * 60);
-  const diffInHours = diffInMs / (1000 * 60 * 60);
-
-  if (diffInMinutes < 1) {
-    return "just now";
-  } else if (diffInMinutes < 60) {
-    return `${Math.floor(diffInMinutes)}m ago`;
-  } else if (diffInHours < 24) {
-    return `${Math.floor(diffInHours)}h ago`;
-  } else if (diffInHours < 24 * 7) {
-    return `${Math.floor(diffInHours / 24)}d ago`;
-  } else {
-    return dateObj.toLocaleDateString();
+  if (!isValid(dateObj)) {
+    throw new Error("Invalid date provided");
   }
+  return formatDistanceToNow(dateObj, {
+    addSuffix: true,
+    includeSeconds: false,
+  });
+};
+
+const DATE_FORMATS = {
+  DATE_ONLY: "MMMM d, yyyy", // "December 25, 2023"
+  DATE_TIME: "MMMM d, yyyy h:mm a", // "December 25, 2023 2:30 PM"
+} as const;
+type DateFormatType = keyof typeof DATE_FORMATS;
+
+export const formatDate = (
+  date: string | Date,
+  formatType: DateFormatType = "DATE_ONLY"
+): string => {
+  const dateObj = new Date(date);
+
+  if (!isValid(dateObj)) {
+    throw new Error("Invalid date provided");
+  }
+
+  return format(dateObj, DATE_FORMATS[formatType]);
 };

@@ -35,7 +35,7 @@ export default function ActionsDropdown({
         <Button
           variant="ghost"
           size="sm"
-          className="h-7 w-7 p-0 text-muted-foreground"
+          className="h-7 w-7 p-0 text-muted-foreground cursor-pointer"
           onClick={stopPropagation}
         >
           <MoreHorizontal className="h-3 w-3" />
