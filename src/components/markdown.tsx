@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@/lib/utils/get-base-url";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
@@ -11,8 +12,7 @@ export default function Markdown({ children }: MarkdownProps) {
       components={{
         a: ({ href, children }) => {
           const isInternalLink =
-            href?.startsWith(process.env.NEXT_PUBLIC_BASE_URL!) ||
-            href?.startsWith("/");
+            href?.startsWith(getBaseUrl()) || href?.startsWith("/");
           if (isInternalLink) {
             return (
               <Link href={href || "#"} className="text-primary hover:underline">

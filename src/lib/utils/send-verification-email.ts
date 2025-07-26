@@ -9,7 +9,7 @@ export default async function sendVerificationEmail(
 ) {
   await resend.emails.send({
     from: "AI Notes <onboarding@resend.dev>",
-    to: process.env.NODE_ENV === "development" ? "ma_chabbi@esi.dz" : email,
+    to: process.env.NODE_ENV === "development" ? process.env.DEV_EMAIL! : email,
     subject: "Verify your email address for Ai Notes",
     react: VerificationEmail({ token }),
   });
