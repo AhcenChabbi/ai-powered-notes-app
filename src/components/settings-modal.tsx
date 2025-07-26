@@ -32,6 +32,8 @@ import {
 import useUpdateUserMutation from "@/hooks/mutations/useUpdateUserMutation";
 import { useSession } from "next-auth/react";
 import VerifyEmail from "@/lib/utils/verifyEmail";
+
+import userPic from "../../public/user.png";
 type Props = {
   user: User;
 };
@@ -123,7 +125,7 @@ export default function SettingsModal({ user }: Props) {
                   <div className="relative">
                     <Avatar className="h-16 w-16 relative">
                       <AvatarImage
-                        src={previewUrl || "/user.png"}
+                        src={previewUrl || userPic.src}
                         alt="Profile"
                         className="object-cover"
                       />

@@ -100,7 +100,7 @@ const useNoteActions = (note: TNoteWithTags) => {
 
   const moveNoteToTrash = () => {
     updateUserNote(
-      { id: note.id, deletedAt: new Date() },
+      { id: note.id, deletedAt: new Date().toString() },
       {
         onSuccess: () => {
           toast.success(TOAST_MESSAGES.moveToTrash.success);

@@ -12,7 +12,9 @@ import { prisma } from "../prisma";
 import * as bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { request } from "@arcjet/next";
+import { signUpArcjet } from "../security/signupArcjet";
+import { loginArcjet } from "../security/loginArcjet";
 
 export async function signupAction(
   prevState: unknown,
@@ -24,6 +26,53 @@ export async function signupAction(
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
   };
+  const req = await request();
+  const decision = await signUpArcjet.protect(req, {
+    email: rawData.email,
+    requested: 1,
+  });
+
+  if (decision.isDenied()) {
+    if (decision.reason.isRateLimit()) {
+      return {
+        data: rawData,
+        errors: { root: "Too Many Requests" },
+      };
+    }
+    if (decision.reason.isBot()) {
+      return {
+        data: rawData,
+        errors: { root: "Bot Detected" },
+      };
+    }
+    if (decision.reason.isEmail()) {
+      let message = "Invalid email address";
+      if (decision.reason.emailTypes.includes("DISPOSABLE")) {
+        message = "Disposable email addresses are not allowed.";
+      } else if (decision.reason.emailTypes.includes("INVALID")) {
+        message = "Invalid email address.";
+      } else if (decision.reason.emailTypes.includes("NO_MX_RECORDS")) {
+        message = "No MX records found for email address.";
+      }
+      return {
+        data: rawData,
+        errors: { email: message },
+      };
+    }
+    if (decision.reason.isShield()) {
+      return {
+        data: rawData,
+        errors: {
+          root: "Your request was blocked by our security system for unusual activity.d",
+        },
+      };
+    }
+    return {
+      data: rawData,
+      errors: { root: "An error occurred while creating your account." },
+    };
+  }
+
   const validatedCredentials = signupSchema.safeParse(rawData);
   if (!validatedCredentials.success) {
     return {
@@ -76,6 +125,35 @@ export async function loginAction(
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
+  const req = await request();
+  const decision = await loginArcjet.protect(req, {
+    requested: 1,
+  });
+  if (decision.isDenied()) {
+    if (decision.reason.isRateLimit()) {
+      return {
+        data: rawData,
+        errors: { root: "Too Many Requests" },
+      };
+    } else if (decision.reason.isShield()) {
+      return {
+        data: rawData,
+        errors: {
+          root: "Your request was blocked by our security system for unusual activity.d",
+        },
+      };
+    } else if (decision.reason.isBot()) {
+      return {
+        data: rawData,
+        errors: { root: "Bot Detected" },
+      };
+    }
+    return {
+      data: rawData,
+      errors: { root: "An error occurred while logging in." },
+    };
+  }
+
   try {
     const validatedCredentials = loginSchema.safeParse(rawData);
     if (!validatedCredentials.success) {
@@ -94,15 +172,19 @@ export async function loginAction(
       data: rawData,
     };
   } catch (error) {
-    if (isRedirectError(error)) {
-      throw error;
-    }
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
           return {
             errors: {
               root: "Invalid credentials",
+            },
+            data: rawData,
+          };
+        default:
+          return {
+            errors: {
+              root: "An error occurred while logging in.",
             },
             data: rawData,
           };

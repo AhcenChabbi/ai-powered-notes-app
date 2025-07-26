@@ -13,6 +13,7 @@ import ProfileInfoButton from "./profile-info-button";
 import SettingButton from "./settings-button";
 import { useSession } from "next-auth/react";
 import ProfileSkeleton from "./profile-skeleton";
+import userPic from "../../public/user.png";
 
 export default function Profile() {
   const { data, status } = useSession();
@@ -29,7 +30,7 @@ export default function Profile() {
             >
               <Avatar className="h-8 w-8 rounded-full object-cover">
                 <AvatarImage
-                  src={user?.image || "/user.png"}
+                  src={user?.image || userPic.src}
                   alt={user?.name || "User Avatar"}
                 />
                 <AvatarFallback className="rounded-full">SC</AvatarFallback>
@@ -54,7 +55,7 @@ export default function Profile() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-full object-cover">
                   <AvatarImage
-                    src={user?.image || "/user.png"}
+                    src={user?.image || userPic.src}
                     alt={user?.name || "User Avatar"}
                   />
                   <AvatarFallback className="rounded-full">

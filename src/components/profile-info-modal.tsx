@@ -21,6 +21,7 @@ import { useProfileInfoModal } from "@/store/profileInfoModal.store";
 import { useSettingsModal } from "@/store/settingsModal.store";
 import { formatDate } from "@/lib/utils/format-date";
 
+import userPic from "../../public/user.png";
 type Props = {
   user: User;
 };
@@ -43,7 +44,7 @@ export default function ProfileInfoModal({ user }: Props) {
               <div className="flex items-start space-x-6">
                 <Avatar className="h-20 w-20">
                   <AvatarImage
-                    src={user.image || "/placeholder.svg"}
+                    src={user.image || userPic.src}
                     alt={user.name || "User Avatar"}
                   />
                   <AvatarFallback className="text-lg bg-primary/10 text-primary">

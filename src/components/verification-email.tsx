@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@/lib/utils/get-base-url";
 import {
   Body,
   Button,
@@ -17,8 +18,7 @@ interface VerificationEmailProps {
 }
 
 export const VerificationEmail = ({ token }: VerificationEmailProps) => {
-  const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`;
-
+  const verificationLink = `${getBaseUrl()}/verify-email?token=${token}`;
   return (
     <Html>
       <Head />
@@ -67,13 +67,8 @@ export const VerificationEmail = ({ token }: VerificationEmailProps) => {
               </Text>
 
               <Text className="text-gray-600 text-sm leading-6 my-4">
-                This verification link will expire in 24 hours for security
+                This verification link will expire in 2 hours for security
                 purposes.
-              </Text>
-
-              <Text className="text-gray-600 text-sm leading-6 my-4">
-                If you didn&apos;t create an account with Ai Notes, you can
-                safely ignore this email.
               </Text>
             </Section>
 

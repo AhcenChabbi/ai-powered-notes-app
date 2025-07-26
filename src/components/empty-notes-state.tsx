@@ -63,7 +63,7 @@ export default function EmptyNotesState({
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center max-w-md">
           <Icon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-medium mb-2">{title}</h3>
+          <h2 className="text-xl font-medium mb-2">{title}</h2>
           <p className="text-muted-foreground mb-6">{description}</p>
           {showCreateButton && (
             <CreateNoteButton size="lg" className="cursor-pointer">

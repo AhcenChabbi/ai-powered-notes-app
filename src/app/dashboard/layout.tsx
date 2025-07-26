@@ -6,8 +6,12 @@ import SettingsModal from "@/components/settings-modal";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import getSession from "@/lib/getSession";
 import DashboardProviders from "@/providers/dashboard-providers";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
+export const metadata: Metadata = {
+  title: "AI Notes - Dashboard",
+};
 export default async function DashboardLayout({
   children,
 }: {

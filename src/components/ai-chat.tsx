@@ -123,6 +123,9 @@ const ChatToggleButton = ({ onOpen, isOpen }: ChatToggleButtonProps) => {
   return (
     <div className="relative">
       <Button
+        type="button"
+        title="Chat with AI Assistant"
+        aria-label="Chat with AI Assistant"
         onClick={onOpen}
         className="w-16 h-16 rounded-full shadow-xl bg-white hover:bg-gray-50 border-2 border-gray-200 transition-all duration-300 group scale-100 hover:scale-110 cursor-pointer"
       >

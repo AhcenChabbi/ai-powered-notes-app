@@ -81,6 +81,9 @@ export default function CreateTagModal() {
     <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
       <DialogTrigger asChild>
         <Button
+          type="button"
+          title="Create Tag"
+          aria-label="Create Tag"
           variant="ghost"
           size="sm"
           className="h-6 w-6 p-0 cursor-pointer"

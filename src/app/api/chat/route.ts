@@ -39,7 +39,6 @@ export async function POST(req: Request) {
       
       If the requested information is not available, respond with "Sorry, I can't find that information in your notes".
       You can use markdown formatting like links, bullet points, numbered lists, and bold text.
-       Provide links to relevant notes using this relative URL structure (omit the base URL): '/dashboard?noteId=<note-id>'.
       Keep your responses concise and to the point.
       `,
   });
