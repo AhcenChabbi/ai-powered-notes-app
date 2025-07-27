@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 AI Notes – Smart Note Search Assistant
 
-## Getting Started
+> TL;DR: AI-powered note-taking app with Google login, smart search, and rich-text editing.
 
-First, run the development server:
+**AI Notes** is a full-stack web app that lets users **store**, **organize**, and **search** their notes using **AI-powered search** and a modern chat interface. With support for **Google OAuth**, secure credentials, and a polished UI, it acts as your ultimate digital memory.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌐 Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🔗 [https://ai-notes-zeta.vercel.app](https://ai-notes-zeta.vercel.app)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 📄 Create, update, delete, and filter rich-text notes (Notion-style)
+- 🔐 Authentication with **Google OAuth** and **Email/Password**
+- 🧠 AI-powered chatbot: ask anything about your notes
+- 🎨 Modern UI with **Tailwind CSS** and **shadcn/ui**
+- 🚀 And much more... explore the app to discover hidden gems!
 
-## Learn More
+## 🧪 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Tech                      | Purpose                               |
+| ------------------------- | ------------------------------------- |
+| **Next.js 15**            | App framework (App Router)            |
+| **Tailwind CSS**          | Utility-first styling                 |
+| **shadcn/ui**             | Prebuilt accessible components        |
+| **Prisma + PostgreSQL**   | ORM and relational database           |
+| **Auth.js**               | Authentication (Google + credentials) |
+| **Vercel AI SDK**         | Chatbot & AI integration              |
+| **Zustand**               | State management                      |
+| **Novel**                 | Notion-style WYSIWYG editor           |
+| **React Hook Form + Zod** | Forms & schema validation             |
+| **React Query + Axios**   | Data fetching & caching               |
+| **Resend**                | Email notifications                   |
+| **Nuqs**                  | Type-safe search params state         |
+| **Lucide React**          | Icon library                          |
+| **Vercel Blob**           | File uploads                          |
+| **Arcjet**                | App-level protection & rate limiting  |
+| **Vercel**                | Hosting & deployment                  |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📸 Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 🏠 Landing Page  
+  ![Landing page](./public/landingPage.png)
 
-## Deploy on Vercel
+- 🔐 Login Page  
+  ![Login page](./public/loginPage.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 📝 Signup Page  
+  ![Signup page](./public/signupPage.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 📋 Dashboard  
+  ![Dashboard page](./public/dashboardPage.png)
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
